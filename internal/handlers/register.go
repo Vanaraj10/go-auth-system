@@ -3,6 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"go-auth-system/internal/db"
+	"go-auth-system/internal/models"
 	"go-auth-system/internal/utils"
 	"net/http"
 )
@@ -23,8 +25,23 @@ func HandleRegister(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error hashing password", http.StatusInternalServerError)
 			return
 		}
-		fmt.Printf("Registration attempt for: %s, Hashed Password: %s", req.Email, hashedPassword)
-		fmt.Fprintln(w, "Registration successful (dummy response)")
+		token, err := utils.GenerateToken(32)
+		if err != nil {
+			http.Error(w, "Error generating verification token", http.StatusInternalServerError)
+			return
+		}
+		user := &models.User{
+			Email: req.Email,
+			Password: hashedPassword,
+			IsActive: false,
+			VerificationToken: token,
+		}
+		err = db.CreateUser(user)
+		if err != nil {
+			http.Error(w, "Error creating user", http.StatusInternalServerError)
+			return
+		}
+		fmt.Fprintln(w, "Registration successful for %s!",req.Email)
 	}else{
 		fmt.Fprintln(w, "Please send a POST request to register.")
 	}
