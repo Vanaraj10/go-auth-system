@@ -41,7 +41,12 @@ func HandleRegister(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error creating user", http.StatusInternalServerError)
 			return
 		}
-		fmt.Fprintln(w, "Registration successful for %s!",req.Email)
+		err = utils.SendVerificationEmail(req.Email, token)
+		if err != nil {
+			http.Error(w, "Error sending verification email", http.StatusInternalServerError)
+			return
+		}
+		fmt.Fprintln(w, "Registration successful! Please check your email to verify your account.")
 	}else{
 		fmt.Fprintln(w, "Please send a POST request to register.")
 	}
