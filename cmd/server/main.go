@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-auth-system/internal/db"
 	"go-auth-system/internal/handlers"
+	"go-auth-system/internal/middleware"
 	"net/http"
 	"os"
 
@@ -26,6 +27,8 @@ func main() {
 	http.HandleFunc("/register", handlers.HandleRegister)
 	http.HandleFunc("/verify", handlers.VerifyEmailHandler)
 	http.HandleFunc("/login", handlers.LoginHandler)
+
+	http.HandleFunc("/protected", middleware.JWTAuth(handlers.ProtectedHandler))
 	http.ListenAndServe(":8080", nil)
 	fmt.Println("Server is starting on port 8080")
 }
