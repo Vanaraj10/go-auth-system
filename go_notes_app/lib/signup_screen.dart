@@ -10,7 +10,7 @@ class SignupScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            Text("Login Screen", style: TextStyle(fontSize: 24)),
+            Text("Signup Screen", style: TextStyle(fontSize: 24)),
           ],
         ),
       ),

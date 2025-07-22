@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_notes_app/Login_screen.dart';
+import 'package:go_notes_app/login_screen.dart';
 import 'package:go_notes_app/signup_screen.dart';
 import 'package:lottie/lottie.dart';
 
@@ -16,8 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "StarNotes",
       theme: ThemeData(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        brightness: Brightness.dark,
       ),
       home: WelcomeScreen(),
     );
