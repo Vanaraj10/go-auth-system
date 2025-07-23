@@ -12,7 +12,7 @@ func SendVerificationEmail(toEmail, token string) error {
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
-	verificationLink := fmt.Sprintf("http://localhost:8080/verify?token=%s",token)
+	verificationLink := fmt.Sprintf("https://go-auth-system-production.up.railway.app/verify?token=%s",token)
 	subject := "Email Verification\n"
 	body := fmt.Sprintf("Click the link to verify your email: %s", verificationLink)
 	message := []byte(subject + "\n" + body)
