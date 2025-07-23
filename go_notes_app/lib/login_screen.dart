@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'home_screen.dart';
+import 'package:http/http.dart' as http;
+
+final storage = GetStorage();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,6 +17,51 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() {
+        errorMessage = "Please fill in all fields.";
+      });
+      return;
+    }
+    setState(() {
+      errorMessage = null;
+    });
+
+    final url = Uri.parse(
+      "https://go-auth-system-production.up.railway.app/login",
+    );
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final token = data['token'];
+
+        storage.write('jwt_token', token);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        setState(() {
+          errorMessage = "Invalid email or password.";
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = "An error occurred: $e";
+      });
+    }
+  }
 
   String? errorMessage;
 
@@ -24,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 100.0,),
+              SizedBox(height: 100.0),
               Text(
                 "Hey",
                 textAlign: TextAlign.left,
@@ -39,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.email,color: Colors.blueAccent),
+                  prefixIcon: Icon(Icons.email, color: Colors.blueAccent),
                   hint: Text("Email Address"),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -51,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: passwordController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.password, color: Colors.blueAccent,),
+                  prefixIcon: Icon(Icons.password, color: Colors.blueAccent),
                   hint: Text("Password"),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -77,27 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                 ),
-                onPressed: () {
-                  final email = emailController.text.trim();
-                  final password = passwordController.text;
-                  if (email.isEmpty || password.isEmpty) {
-                    setState(() {
-                      errorMessage = "Please fill in all fields.";
-                    });
-                  } else {
-                    setState(() {
-                      errorMessage = null; // Clear error message
-                    });
-                  }
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text("Login Pressed"),behavior: SnackBarBehavior.floating,));
-                },
+                onPressed: _login,
                 child: Text("Login", style: TextStyle(fontSize: 18)),
               ),
             ],
           ),
-          
         ),
       ),
     );

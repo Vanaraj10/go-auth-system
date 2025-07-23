@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_notes_app/login_screen.dart';
-import 'package:go_notes_app/signup_screen.dart';
-import 'package:lottie/lottie.dart';
+import 'package:get_storage/get_storage.dart';
+import 'login_screen.dart';
+import 'signup_screen.dart';
 
-void main() {
+void main() async{
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -35,7 +36,6 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Lottie.asset('assets/lotties/welcome.json'),
               Text(
                 "Welcome to StarNotes",
                 style: TextStyle(
