@@ -96,7 +96,10 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                   border: InputBorder.none
                 ),
               ),
-            )
+            ),
+            if (isLoading) 
+              Padding(padding: EdgeInsets.only(top: 10),
+              child: CircularProgressIndicator.adaptive(strokeWidth: 8.0,),) 
           ],
         ),
         ),

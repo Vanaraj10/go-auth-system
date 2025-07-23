@@ -15,17 +15,44 @@ class _HomeScreenState extends State<HomeScreen> {
   List notes = [];
   bool isLoading = true;
 
+  final token = storage.read('jwt_token');
+
   @override
   void initState() {
     super.initState();
     fetchNotes();
   }
 
+  Future<void> deleteNote(int noteId) async {
+    setState(() {
+      isLoading = true;
+    });
+    final url = Uri.parse(
+      "https://go-auth-system-production.up.railway.app/note/delete?id=$noteId",
+    );
+    final response = await http.delete(
+      url,
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    setState(() {
+      isLoading = false;
+    });
+    if (response.statusCode == 200) {
+      setState(() {
+        notes.removeWhere((note) => note['id'] == noteId);
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to delete note. Please try again.")),
+      );
+    }
+  }
+
   Future<void> fetchNotes() async {
     setState(() {
       isLoading = true;
     });
-    final token = storage.read('jwt_token');
+
     if (token == null) {
       setState(() {
         notes = [];
@@ -76,6 +103,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   final note = notes[index];
                   return GestureDetector(
+                    onLongPress: () async {
+                      final confirm = await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog.adaptive(
+                            title: Text("Delete Note"),
+                            content: Text(
+                              "Are you sure you want to delete this note?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: Text(
+                                  "Delete",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      if (confirm == true) {
+                        await deleteNote(note['id']);
+                      }
+                    },
                     onTap: () {
                       print("Tapped on note: ${note['id']}");
                     },
@@ -116,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
+        onPressed: () async {
           final created = await Navigator.push(
             context,
             MaterialPageRoute(
