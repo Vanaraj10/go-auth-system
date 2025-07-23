@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:go_notes_app/create_note_screen.dart';
 import 'package:go_notes_app/login_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,7 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
+        leading: Icon(Icons.star, size: 35, color: Colors.yellow),
         title: Text("StarNotes"),
         actions: [
           IconButton(icon: Icon(Icons.refresh), onPressed: () => fetchNotes()),
@@ -99,9 +100,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(height: 5),
                           Text(
                             note['content'].toString().length > 50
-                                ? note['content'].toString().substring(0, 50) + '...'
+                                ? note['content'].toString().substring(0, 50) +
+                                      '...'
                                 : note['content'].toString(),
-                            style: TextStyle(fontSize: 18,color: Colors.white70),
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white70,
+                            ),
                           ),
                         ],
                       ),
@@ -111,7 +116,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async{
+          final created = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return CreateNoteScreen();
+              },
+            ),
+          );
+          if (created == true) {
+            fetchNotes(); // Refresh notes after creating a new one
+          }
+        },
         child: Icon(Icons.add),
       ),
     );
