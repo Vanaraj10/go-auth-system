@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:go_notes_app/main.dart';
 import 'home_screen.dart';
 import 'package:http/http.dart' as http;
-
-final storage = GetStorage();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -53,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } else {
         setState(() {
-          errorMessage = "Invalid email or password.";
+          errorMessage = "Email not verified or invalid credentials.";
         });
       }
     } catch (e) {

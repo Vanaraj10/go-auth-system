@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_notes_app/create_note_screen.dart';
-import 'package:go_notes_app/login_screen.dart';
+import 'package:go_notes_app/main.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
