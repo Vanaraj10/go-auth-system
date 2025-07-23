@@ -74,32 +74,37 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: notes.length,
                 itemBuilder: (context, index) {
                   final note = notes[index];
-                  return Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.symmetric(vertical: 12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          note['title'] ?? 'No Title',
-                          style: TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
+                  return GestureDetector(
+                    onTap: () {
+                      print("Tapped on note: ${note['id']}");
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      margin: const EdgeInsets.symmetric(vertical: 12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            note['title'] ?? 'No Title',
+                            style: TextStyle(
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          note['content'].toString().length > 50
-                              ? note['content'].toString().substring(0, 50) + '...'
-                              : note['content'].toString(),
-                          style: TextStyle(fontSize: 18,color: Colors.white70),
-                        ),
-                      ],
+                          SizedBox(height: 5),
+                          Text(
+                            note['content'].toString().length > 50
+                                ? note['content'].toString().substring(0, 50) + '...'
+                                : note['content'].toString(),
+                            style: TextStyle(fontSize: 18,color: Colors.white70),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
