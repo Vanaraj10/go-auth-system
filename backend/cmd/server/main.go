@@ -9,10 +9,25 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 func main() {
 	godotenv.Load()
+
+	// Set up HTTP handlers
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handlers.HomeHandler)
+	mux.HandleFunc("/register", handlers.HandleRegister)
+	mux.HandleFunc("/verify", handlers.VerifyEmailHandler)
+	mux.HandleFunc("/login", handlers.LoginHandler)
+	mux.HandleFunc("/protected", middleware.JWTAuth(handlers.ProtectedHandler))
+	mux.HandleFunc("/notes", middleware.JWTAuth(handlers.CreateNoteHandler))       // POST
+	mux.HandleFunc("/get-notes", middleware.JWTAuth(handlers.GetNotesByUser))      // GET
+	mux.HandleFunc("/note", middleware.JWTAuth(handlers.GetNoteByIDHandler))       // GET (by id)
+	mux.HandleFunc("/note/update", middleware.JWTAuth(handlers.UpdateNoteHandler)) // PUT
+	mux.HandleFunc("/note/delete", middleware.JWTAuth(handlers.DeleteNoteHandler)) // DELETE
+
 	connStr := os.Getenv("DB_URL")
 	if connStr == "" {
 		fmt.Println("DB_URL environment variable is not set")
@@ -23,19 +38,18 @@ func main() {
 		fmt.Println("Error initializing database:", err)
 		return
 	}
-	http.HandleFunc("/", handlers.HomeHandler)
-	http.HandleFunc("/register", handlers.HandleRegister)
-	http.HandleFunc("/verify", handlers.VerifyEmailHandler)
-	http.HandleFunc("/login", handlers.LoginHandler)
+	
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
 
-	http.HandleFunc("/protected", middleware.JWTAuth(handlers.ProtectedHandler))
-
-	http.HandleFunc("/notes", middleware.JWTAuth(handlers.CreateNoteHandler))       // POST
-	http.HandleFunc("/get-notes", middleware.JWTAuth(handlers.GetNotesByUser))     // GET
-	http.HandleFunc("/note", middleware.JWTAuth(handlers.GetNoteByIDHandler))       // GET (by id)
-	http.HandleFunc("/note/update", middleware.JWTAuth(handlers.UpdateNoteHandler)) // PUT
-	http.HandleFunc("/note/delete", middleware.JWTAuth(handlers.DeleteNoteHandler)) // DELETE
-
-	http.ListenAndServe(":8080", nil)
-	fmt.Println("Server is starting on port 8080")
+	port := os.Getenv("SERVER_PORT")
+	if port == "" {
+		port = "8080"
+	}
+	fmt.Println("Server is starting on port", port)
+	http.ListenAndServe(":"+port, c.Handler(mux))
 }
