@@ -13,9 +13,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool isLoading = false;
+  
   Future<void> _login() async {
     final email = emailController.text.trim();
     final password = passwordController.text;
@@ -28,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     setState(() {
       errorMessage = null;
+      isLoading = true;
     });
 
     final url = Uri.parse(
@@ -44,10 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
         final token = data['token'];
 
         storage.write('jwt_token', token);
-
+        setState(() {
+          isLoading = false;
+        });
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) =>const HomeScreen()),
         );
       } else {
         setState(() {
@@ -130,6 +136,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: _login,
                 child: Text("Login", style: TextStyle(fontSize: 18)),
               ),
+              if(isLoading == true)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
             ],
           ),
         ),

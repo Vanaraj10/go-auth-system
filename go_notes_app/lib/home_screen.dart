@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_notes_app/create_note_screen.dart';
 import 'package:go_notes_app/main.dart';
+import 'package:go_notes_app/welcome_screen.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
@@ -89,7 +90,13 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(Icons.star, size: 35, color: Colors.yellow),
         title: Text("StarNotes"),
         actions: [
-          IconButton(icon: Icon(Icons.refresh), onPressed: () => fetchNotes()),
+          IconButton(icon: Icon(Icons.logout), onPressed: () {
+            storage.remove('jwt_token');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) =>const WelcomeScreen()),
+            );
+          },),
         ],
       ),
       body: Padding(
@@ -177,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (context) {
-                return CreateNoteScreen();
+                return const CreateNoteScreen();
               },
             ),
           );
