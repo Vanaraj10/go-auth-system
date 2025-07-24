@@ -72,21 +72,20 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: titleController,
-              style: TextStyle(fontSize: 30),
-              decoration: InputDecoration(
-                hintText: "Enter note title",
-                
-                hintStyle: TextStyle(color: Colors.grey, fontSize: 30),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: titleController,
+                style: TextStyle(fontSize: 30),
+                decoration: InputDecoration(
+                  hintText: "Enter note title",
+                  
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: 30),
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: 400,
-              child: TextField(
+              SizedBox(height: 10),
+              TextField(
                 controller: contentController,
                 maxLines: null,
                 style: TextStyle(fontSize: 20),
@@ -96,8 +95,8 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                   border: InputBorder.none
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         ),
     );

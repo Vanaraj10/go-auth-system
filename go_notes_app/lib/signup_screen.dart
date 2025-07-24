@@ -18,6 +18,8 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool isLoading = false;
+
   Future<void> _signup() async {
     final email = emailController.text.trim();
     final password = passwordController.text;
@@ -30,6 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
     setState(() {
       errorMessage = null;
+      isLoading = true;
     });
 
     final url = Uri.parse(
@@ -42,6 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
         body: jsonEncode({'email': email, 'password': password}),
       );
       if (response.statusCode == 200) {
+        isLoading = false;
         await showDialog(
           context: context,
           builder: (context) {
@@ -55,7 +59,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) =>const WelcomeScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const WelcomeScreen(),
+                      ),
                     );
                   },
                   child: Text("OK"),
@@ -67,11 +73,13 @@ class _SignupScreenState extends State<SignupScreen> {
       } else {
         setState(() {
           errorMessage = "Failed to sign up. Please try again.";
+          isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
         errorMessage = "An error occurred: $e";
+        isLoading = false;
       });
     }
   }
@@ -145,6 +153,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: _signup,
                 child: Text("Sign Up", style: TextStyle(fontSize: 18)),
               ),
+              if (isLoading)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: CircularProgressIndicator.adaptive(strokeWidth: 8.0),
+                  ),
+                ),
             ],
           ),
         ),

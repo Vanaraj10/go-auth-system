@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator.adaptive(strokeWidth: 8.0,),
                   ),
                 ),
             ],

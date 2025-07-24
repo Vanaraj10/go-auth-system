@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_notes_app/create_note_screen.dart';
+import 'package:go_notes_app/edit_note_screen.dart';
 import 'package:go_notes_app/main.dart';
 import 'package:go_notes_app/welcome_screen.dart';
 import 'package:http/http.dart' as http;
@@ -76,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       setState(() {
         notes = [];
-        
       });
     }
     isLoading = false;
@@ -91,13 +91,16 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Icon(Icons.star, size: 35, color: Colors.yellow),
         title: Text("StarNotes"),
         actions: [
-          IconButton(icon: Icon(Icons.logout), onPressed: () {
-            storage.remove('jwt_token');
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) =>const WelcomeScreen()),
-            );
-          },),
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              storage.remove('jwt_token');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+              );
+            },
+          ),
         ],
       ),
       body: Padding(
@@ -140,8 +143,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         await deleteNote(note['id']);
                       }
                     },
-                    onTap: () {
-                      print("Tapped on note: ${note['id']}");
+                    onTap: () async {
+                      final updated = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return EditNoteScreen(
+                              noteId: note['id'],
+                              initialTitle: note['title'] ?? '',
+                              initialContent: note['content'] ?? '',
+                            );
+                          },
+                        ),
+                      );
+                      if (updated == true) {
+                        fetchNotes();
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),
