@@ -76,9 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       setState(() {
         notes = [];
-        isLoading = false;
+        
       });
     }
+    isLoading = false;
   }
 
   @override

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'home_screen.dart';
+import 'package:go_notes_app/welcome_screen.dart';
 import 'package:http/http.dart' as http;
 
 final storage = GetStorage();
@@ -55,7 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) =>const HomeScreen()),
+                      MaterialPageRoute(builder: (context) =>const WelcomeScreen()),
                     );
                   },
                   child: Text("OK"),
