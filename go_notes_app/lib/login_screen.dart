@@ -81,18 +81,18 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 100.0),
-              Text(
+              const SizedBox(height: 100.0),
+              const Text(
                 "Hey",
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
               ),
-              Text(
+              const Text(
                 "Welcome back",
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 35, color: Colors.grey),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: passwordController,
                 decoration: InputDecoration(
@@ -124,14 +124,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 obscureText: _obscureText,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               if (errorMessage != null)
                 Text(
                   textAlign: TextAlign.center,
                   errorMessage!,
                   style: TextStyle(color: Colors.red, fontSize: 16),
                 ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
-                    child: CircularProgressIndicator.adaptive(strokeWidth: 8.0,),
+                    child:const  CircularProgressIndicator.adaptive(strokeWidth: 8.0,),
                   ),
                 ),
             ],

@@ -91,25 +91,25 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: const Text("Sign Up")),
-      body: Center(
-        child: Padding(
+      body:  Center(
+        child:  Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 100.0),
-              Text(
+               const SizedBox(height: 100.0),
+              const Text(
                 "Welcome",
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
               ),
-              Text(
+              const Text(
                 "Create your account",
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 35, color: Colors.grey),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -121,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: passwordController,
                 decoration: InputDecoration(
@@ -141,14 +141,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               if (errorMessage != null)
                 Text(
                   textAlign: TextAlign.center,
                   errorMessage!,
                   style: TextStyle(color: Colors.red, fontSize: 16),
                 ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
@@ -166,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 10),
-                    child: CircularProgressIndicator.adaptive(strokeWidth: 8.0),
+                    child: const CircularProgressIndicator.adaptive(strokeWidth: 8.0),
                   ),
                 ),
             ],

@@ -51,17 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> fetchNotes() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    if (token == null) {
-      setState(() {
-        notes = [];
-        isLoading = false;
-      });
-      return;
-    }
+    setState(() => isLoading = true);
     final url = Uri.parse(
       "https://go-auth-system-production.up.railway.app/get-notes",
     );
@@ -69,18 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
       url,
       headers: {"Authorization": "Bearer $token"},
     );
+    List newNotes = [];
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
-      setState(() {
-        notes = decoded is List ? decoded : [];
-        isLoading = false;
-      });
-    } else {
-      setState(() {
-        notes = [];
-        isLoading = false;
-      });
+      if (decoded is List) newNotes = decoded;
     }
+    setState(() {
+      notes = newNotes;
+      isLoading = false;
+    });
   }
 
   @override
@@ -107,9 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? const  Center(child: CircularProgressIndicator())
             : notes.isEmpty
-            ? Center(child: Text("No Notes Found", style: TextStyle(fontSize: 30)))
+            ?const Center(
+                child: Text("No Notes Found", style: TextStyle(fontSize: 30)),
+              )
             : ListView.builder(
                 itemCount: notes.length,
                 itemBuilder: (context, index) {
@@ -179,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 5),
+                         const  SizedBox(height: 5),
                           Text(
                             note['content'].toString().length > 50
                                 ? note['content'].toString().substring(0, 50) +
@@ -211,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
             fetchNotes(); // Refresh notes after creating a new one
           }
         },
-        child: Icon(Icons.add),
+        child:const  Icon(Icons.add),
       ),
     );
   }

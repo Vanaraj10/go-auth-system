@@ -16,12 +16,12 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Lottie.asset('assets/lotties/welcome.json'),
-              Text(
+              const Text(
                 "Welcome to StarNotes",
                 maxLines: 1,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w900),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                 },
                 child: Text("Get Started", style: TextStyle(fontSize: 18)),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.push(
