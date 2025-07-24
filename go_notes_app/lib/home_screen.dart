@@ -70,16 +70,17 @@ class _HomeScreenState extends State<HomeScreen> {
       headers: {"Authorization": "Bearer $token"},
     );
     if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
       setState(() {
-        notes = jsonDecode(response.body);
+        notes = decoded is List ? decoded : [];
         isLoading = false;
       });
     } else {
       setState(() {
         notes = [];
+        isLoading = false;
       });
     }
-    isLoading = false;
   }
 
   @override
@@ -108,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: isLoading
             ? Center(child: CircularProgressIndicator())
             : notes.isEmpty
-            ? Center(child: Text("No Notes Found"))
+            ? Center(child: Text("No Notes Found", style: TextStyle(fontSize: 30)))
             : ListView.builder(
                 itemCount: notes.length,
                 itemBuilder: (context, index) {
