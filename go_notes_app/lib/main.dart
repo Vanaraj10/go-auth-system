@@ -7,9 +7,9 @@ import 'home_screen.dart';
 
 final storage = GetStorage();
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  GetStorage.init();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
