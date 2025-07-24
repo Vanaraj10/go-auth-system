@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
+  bool _obscureText = true;
   
   Future<void> _login() async {
     final email = emailController.text.trim();
@@ -112,8 +113,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
+                  suffixIcon: IconButton(onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  }, icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.blueAccent,
+                  ))
                 ),
-                obscureText: true,
+                obscureText: _obscureText,
               ),
               SizedBox(height: 15),
               if (errorMessage != null)

@@ -19,6 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
+  bool _obscureText = true;
 
   Future<void> _signup() async {
     final email = emailController.text.trim();
@@ -129,6 +130,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
+                  suffixIcon: IconButton(onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  }, icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.blueAccent,
+                  ))
                 ),
                 obscureText: true,
               ),
