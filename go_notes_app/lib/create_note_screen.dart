@@ -84,7 +84,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 30),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: contentController,
                 maxLines: null,

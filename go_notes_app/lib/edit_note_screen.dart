@@ -110,7 +110,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 30),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: contentController,
                 maxLines: null,
