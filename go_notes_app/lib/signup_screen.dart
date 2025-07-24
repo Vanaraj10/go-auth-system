@@ -124,6 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 20),
               TextField(
                 controller: passwordController,
+                
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.password, color: Colors.blueAccent),
                   hint: Text("Password"),
@@ -139,7 +140,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: Colors.blueAccent,
                   ))
                 ),
-                obscureText: true,
+                obscureText: _obscureText,
               ),
               const SizedBox(height: 15),
               if (errorMessage != null)

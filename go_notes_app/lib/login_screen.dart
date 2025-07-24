@@ -59,11 +59,13 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         setState(() {
           errorMessage = "Email not verified or invalid credentials.";
+          isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
         errorMessage = "An error occurred: $e";
+        isLoading = false;
       });
     }
   }
@@ -95,6 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
               TextField(
                 controller: emailController,
+                autofillHints: emailController.text.isEmpty
+                    ? [AutofillHints.email]
+                    : null,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email, color: Colors.blueAccent),
                   hint: Text("Email Address"),
