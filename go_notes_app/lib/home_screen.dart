@@ -76,17 +76,36 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        leading: Icon(Icons.star, size: 35, color: Colors.yellow),
-        title: Text("StarNotes"),
+        leading: const Icon(Icons.star, size: 35, color: Colors.yellow),
+        title: const Text("StarNotes"),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () {
-              storage.remove('jwt_token');
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+            onPressed: () async {
+              await showDialog(context: context, builder: (context) {
+                return  AlertDialog.adaptive(
+                title: const Text("Logout"),
+                content: Text("Are you sure you want to log out?"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("No",style: TextStyle(color: Colors.green,fontSize: 20),),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      storage.remove('jwt_token');
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomeScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text("Yes", style: TextStyle(color: Colors.red,fontSize: 20),),
+                  ),
+                ],
               );
+              });
             },
           ),
         ],
@@ -94,9 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: isLoading
-            ? const  Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : notes.isEmpty
-            ?const Center(
+            ? const Center(
                 child: Text("No Notes Found", style: TextStyle(fontSize: 30)),
               )
             : ListView.builder(
@@ -116,13 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context, false),
-                                child: Text("Cancel"),
+                                child: Text("Cancel", style: TextStyle(color: Colors.green,fontSize: 20),),
                               ),
                               TextButton(
                                 onPressed: () => Navigator.pop(context, true),
                                 child: Text(
                                   "Delete",
-                                  style: TextStyle(color: Colors.red),
+                                  style: TextStyle(color: Colors.red,fontSize: 20),
                                 ),
                               ),
                             ],
@@ -168,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                         const  SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             note['content'].toString().length > 50
                                 ? note['content'].toString().substring(0, 50) +
@@ -197,10 +216,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
           if (created == true) {
-            fetchNotes(); // Refresh notes after creating a new one
+            fetchNotes();
           }
         },
-        child:const  Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

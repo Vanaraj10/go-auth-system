@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text("Get Started", style: TextStyle(fontSize: 18)),
+                child: const Text("Get Started", style: TextStyle(fontSize: 18)),
               ),
               const SizedBox(height: 10),
               TextButton(
@@ -51,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
-                child: Text(
+                child: const Text(
                   "Already have an account? Login",
                   style: TextStyle(fontSize: 16, color: Colors.blueAccent),
                 ),

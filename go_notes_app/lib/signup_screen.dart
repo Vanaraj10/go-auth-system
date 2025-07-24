@@ -112,6 +112,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 20),
               TextField(
                 controller: emailController,
+                autofillHints: [AutofillHints.email],
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email, color: Colors.blueAccent),
                   hint: Text("Email Address"),
